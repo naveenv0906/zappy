@@ -17,17 +17,27 @@ exports.speechToText = async (audioBuffer, apiKey) => {
 };
 
 exports.textToSpeech = async (text, apiKey) => {
-  const key = apiKey || process.env.DEEPGRAM_API_KEY;
-  const deepgram = createClient(key);
-  
-  const response = await deepgram.speak.request(
-    { text },
-    { model: "aura-asteria-en" }
-  );
-  const stream = await response.getStream();
-  const chunks = [];
-  for await (const chunk of stream) {
-    chunks.push(chunk);
+  try {
+    const key = apiKey || process.env.DEEPGRAM_API_KEY;
+    const deepgram = createClient(key);
+    
+    const response = await deepgram.speak.request(
+      { text },
+      { model: "aura-asteria-en" }
+    );
+    
+    const stream = await response.getStream();
+    if (!stream) {
+      return null;
+    }
+    
+    const chunks = [];
+    for await (const chunk of stream) {
+      chunks.push(chunk);
+    }
+    return Buffer.concat(chunks);
+  } catch (err) {
+    console.error('TTS Error:', err.message);
+    return null;
   }
-  return Buffer.concat(chunks);
 };

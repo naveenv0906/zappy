@@ -25,12 +25,17 @@ exports.sendMessage = async (req, res) => {
 
     const history = await prisma.conversation.findMany({
       where: { userId },
-      orderBy: { createdAt: "asc" },
-      take: 10
+      orderBy: { createdAt: "desc" },
+      take: 6
     });
+    history.reverse();
 
     const messages = history.map(h => ({ role: h.role, content: h.content }));
     const aiResponse = await groqService.getAIResponse(messages, user.bondType, user.groqApiKey);
+
+    if (!aiResponse || aiResponse.trim() === '') {
+      throw new Error('Empty AI response from Groq');
+    }
 
     await prisma.conversation.create({
       data: { userId, role: "assistant", content: aiResponse }
@@ -40,7 +45,7 @@ exports.sendMessage = async (req, res) => {
 
     res.json({
       text: aiResponse,
-      audio: audioResponse.toString("base64")
+      audio: audioResponse ? audioResponse.toString("base64") : ""
     });
   } catch (err) {
     console.error(err);
