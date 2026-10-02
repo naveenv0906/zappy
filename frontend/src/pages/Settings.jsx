@@ -3,18 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 
 const voices = [
-  { id: 'cgSgspJ2msm6clMCkdW9', label: 'Jessica', desc: 'Female · Warm & Friendly' },
-  { id: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah', desc: 'Female · Soft & Calm' },
-  { id: 'FGY2WhTYpPnrIDTdsKH5', label: 'Laura', desc: 'Female · Upbeat' },
-  { id: 'XB0fDUnXU5powFXDhCwa', label: 'Charlotte', desc: 'Female · British' },
-  { id: 'Xb7hH8MSUJpSbSDYk0k2', label: 'Alice', desc: 'Female · Confident' },
-  { id: 'pFZP5JQG7iQjIQuC4Bku', label: 'Lily', desc: 'Female · Gentle' },
-  { id: '9BWtsMINqrJLrRacOk9x', label: 'Aria', desc: 'Female · Expressive' },
-  { id: 'SAz9YHcvj6GT2YYXdXww', label: 'River', desc: 'Female · Versatile' },
-  { id: 'XrExE9yKIg1WjnnlVkGX', label: 'Matilda', desc: 'Female · Warm' },
-  { id: 'pMsXgVXv3BLzUgSXRplE', label: 'Serena', desc: 'Female · Pleasant' },
-  { id: 'piTKgcLEGmPE4e6mEKli', label: 'Nicole', desc: 'Female · Whispery' },
-  { id: 'oWAxZDx7w5VEj9dCyTzz', label: 'Grace', desc: 'Female · Southern' },
+  { id: 'cgSgspJ2msm6clMCkdW9', label: 'Jessica', desc: 'Female · Playful & Warm' },
+  { id: 'EXAVITQu4vr4xnSDxMaL', label: 'Sarah', desc: 'Female · Mature & Confident' },
+  { id: 'FGY2WhTYpPnrIDTdsKH5', label: 'Laura', desc: 'Female · Enthusiastic' },
+  { id: 'Xb7hH8MSUJpSbSDYk0k2', label: 'Alice', desc: 'Female · Clear & Engaging' },
+  { id: 'pFZP5JQG7iQjIQuC4Bku', label: 'Lily', desc: 'Female · Velvety' },
+  { id: 'XrExE9yKIg1WjnnlVkGX', label: 'Matilda', desc: 'Female · Professional' },
+  { id: 'hpp4J3VqNfWAUOO0d1Us', label: 'Bella', desc: 'Female · Bright & Warm' },
 ];
 
 export default function Settings() {

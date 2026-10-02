@@ -126,7 +126,7 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white">
+    <div className="flex flex-col bg-white" style={{ height: '100dvh' }}>
       {/* Header */}
       <div className="border-b border-gray-200 px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
         <h1 className="text-lg sm:text-xl font-semibold flex items-center gap-2">

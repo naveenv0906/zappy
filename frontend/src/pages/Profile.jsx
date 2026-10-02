@@ -6,15 +6,10 @@ const voices = {
   'cgSgspJ2msm6clMCkdW9': 'Jessica',
   'EXAVITQu4vr4xnSDxMaL': 'Sarah',
   'FGY2WhTYpPnrIDTdsKH5': 'Laura',
-  'XB0fDUnXU5powFXDhCwa': 'Charlotte',
   'Xb7hH8MSUJpSbSDYk0k2': 'Alice',
   'pFZP5JQG7iQjIQuC4Bku': 'Lily',
-  '9BWtsMINqrJLrRacOk9x': 'Aria',
-  'SAz9YHcvj6GT2YYXdXww': 'River',
   'XrExE9yKIg1WjnnlVkGX': 'Matilda',
-  'pMsXgVXv3BLzUgSXRplE': 'Serena',
-  'piTKgcLEGmPE4e6mEKli': 'Nicole',
-  'oWAxZDx7w5VEj9dCyTzz': 'Grace',
+  'hpp4J3VqNfWAUOO0d1Us': 'Bella',
 };
 
 export default function Profile() {
