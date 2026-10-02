@@ -49,7 +49,7 @@ exports.getAIResponse = async (messages, bondType, apiKey) => {
           { role: "system", content: systemPrompt },
           ...messages
         ],
-        model: "gemma2-9b-it",
+        model: "openai/gpt-oss-20b",
         temperature: 0.8,
         max_tokens: 75
       });
