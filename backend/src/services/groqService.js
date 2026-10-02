@@ -55,6 +55,8 @@ exports.getAIResponse = async (messages, bondType, apiKey) => {
       });
 
       const response = completion.choices[0]?.message?.content?.trim() || '';
+      console.log('Groq finish_reason:', completion.choices[0]?.finish_reason);
+      console.log('Groq response:', response);
       if (response) return response;
 
       console.warn(`Attempt ${attempt}: Empty response, retrying...`);
