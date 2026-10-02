@@ -49,7 +49,7 @@ exports.getAIResponse = async (messages, bondType, apiKey) => {
       { role: "system", content: systemPrompt },
       ...messages
     ],
-    model: "llama-3.1-8b-instant",
+    model: "gemma2-9b-it",
     temperature: 0.8,
     max_tokens: 75
   });
