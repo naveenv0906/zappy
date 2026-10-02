@@ -8,16 +8,16 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  name         String
-  email        String         @unique
-  password     String
-  bondType     String         @default("Girlfriend") @map("bond_type")
-  groqApiKey   String?        @map("groq_api_key")
-  deepgramApiKey String?      @map("deepgram_api_key")
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  conversations Conversation[]
+  id             Int            @id @default(autoincrement())
+  name           String
+  email          String         @unique
+  password       String
+  groqApiKey       String?        @map("groq_api_key")
+  elevenLabsApiKey String?        @map("elevenlabs_api_key")
+  aiVoice        String         @default("cgSgspJ2msm6clMCkdW9") @map("ai_voice")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+  conversations  Conversation[]
 
   @@map("users")
 }

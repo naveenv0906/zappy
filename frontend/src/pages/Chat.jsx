@@ -11,7 +11,18 @@ export default function Chat() {
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef(null);
   const mediaRecorderRef = useRef(null);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
 
 
@@ -118,7 +129,10 @@ export default function Chat() {
     <div className="flex flex-col h-screen bg-white">
       {/* Header */}
       <div className="border-b border-gray-200 px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
-        <h1 className="text-lg sm:text-xl font-semibold">Zappy AI</h1>
+        <h1 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
+          <img src="/zappy-fav.png" className="w-9 h-9" />
+          Zappy AI
+        </h1>
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={clearHistory}
@@ -126,7 +140,7 @@ export default function Chat() {
           >
             Clear History
           </button>
-          <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setShowDropdown(!showDropdown)}
               className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:bg-gray-800"
@@ -214,20 +228,30 @@ export default function Chat() {
       {/* Input */}
       <div className="border-t border-gray-200 p-3 sm:p-4">
         <form onSubmit={sendMessage} className="max-w-3xl mx-auto">
-          <div className="flex gap-1.5 sm:gap-2">
-            <input
-              type="text"
+          <div className="flex gap-1.5 sm:gap-2 items-end">
+            <textarea
+              rows={1}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                setInput(e.target.value);
+                e.target.style.height = 'auto';
+                e.target.style.height = e.target.scrollHeight + 'px';
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessage(e);
+                }
+              }}
               placeholder="Message Zappy AI..."
-              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:border-black"
+              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-2xl focus:outline-none focus:border-black resize-none overflow-hidden"
               disabled={loading || isRecording}
             />
             <button
               type="button"
               onClick={isRecording ? stopRecording : startRecording}
               disabled={loading}
-              className={`px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg ${isRecording ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-200 hover:bg-gray-300'} disabled:opacity-50`}
+              className={`px-3 sm:px-4 py-2.5 sm:py-3 rounded-full ${isRecording ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-200 hover:bg-gray-300'} disabled:opacity-50`}
             >
               <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
@@ -237,9 +261,12 @@ export default function Chat() {
             <button
               type="submit"
               disabled={loading || !input.trim() || isRecording}
-              className="px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-black text-white rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-black text-white rounded-full hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
-              Send
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 2L11 13"/>
+                <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+              </svg>
             </button>
           </div>
         </form>

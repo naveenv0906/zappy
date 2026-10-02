@@ -9,7 +9,6 @@ exports.getProfile = async (req, res) => {
         id: true,
         name: true,
         email: true,
-        bondType: true,
         createdAt: true
       }
     });

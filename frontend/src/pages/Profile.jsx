@@ -2,12 +2,29 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 
+const voices = {
+  'cgSgspJ2msm6clMCkdW9': 'Jessica',
+  'EXAVITQu4vr4xnSDxMaL': 'Sarah',
+  'FGY2WhTYpPnrIDTdsKH5': 'Laura',
+  'XB0fDUnXU5powFXDhCwa': 'Charlotte',
+  'Xb7hH8MSUJpSbSDYk0k2': 'Alice',
+  'pFZP5JQG7iQjIQuC4Bku': 'Lily',
+  '9BWtsMINqrJLrRacOk9x': 'Aria',
+  'SAz9YHcvj6GT2YYXdXww': 'River',
+  'XrExE9yKIg1WjnnlVkGX': 'Matilda',
+  'pMsXgVXv3BLzUgSXRplE': 'Serena',
+  'piTKgcLEGmPE4e6mEKli': 'Nicole',
+  'oWAxZDx7w5VEj9dCyTzz': 'Grace',
+};
+
 export default function Profile() {
   const [user, setUser] = useState(null);
+  const [aiVoice, setAiVoice] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchProfile();
+    fetchVoice();
   }, []);
 
   const fetchProfile = async () => {
@@ -16,6 +33,15 @@ export default function Profile() {
       setUser(data);
     } catch (err) {
       if (err.response?.status === 401) navigate('/');
+    }
+  };
+
+  const fetchVoice = async () => {
+    try {
+      const { data } = await api.get('/chat/voice');
+      setAiVoice(data.aiVoice);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -46,8 +72,8 @@ export default function Profile() {
             </div>
 
             <div>
-              <label className="text-sm text-gray-600">Bond Type</label>
-              <p className="text-lg font-medium">{user.bondType}</p>
+              <label className="text-sm text-gray-600">AI Voice</label>
+              <p className="text-lg font-medium">{voices[aiVoice] || aiVoice || 'Jessica'}</p>
             </div>
 
             <div>

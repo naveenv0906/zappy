@@ -1,5 +1,5 @@
 const prisma = require("../config/db.js");
-const deepgramService = require("../services/deepgramService.js");
+const elevenLabsService = require("../services/elevenLabsService.js");
 const groqService = require("../services/groqService.js");
 
 exports.sendMessage = async (req, res) => {
@@ -16,7 +16,7 @@ exports.sendMessage = async (req, res) => {
 
     if (audio && !text) {
       const audioBuffer = Buffer.from(audio, "base64");
-      userMessage = await deepgramService.speechToText(audioBuffer, user.deepgramApiKey);
+      userMessage = await elevenLabsService.speechToText(audioBuffer, user.elevenLabsApiKey);
     }
 
     await prisma.conversation.create({
@@ -31,7 +31,7 @@ exports.sendMessage = async (req, res) => {
     history.reverse();
 
     const messages = history.map(h => ({ role: h.role, content: h.content }));
-    const aiResponse = await groqService.getAIResponse(messages, user.bondType, user.groqApiKey);
+    const aiResponse = await groqService.getAIResponse(messages, user.groqApiKey);
 
     if (!aiResponse || aiResponse.trim() === '') {
       throw new Error('Empty AI response from Groq');
@@ -41,7 +41,7 @@ exports.sendMessage = async (req, res) => {
       data: { userId, role: "assistant", content: aiResponse }
     });
 
-    const audioResponse = await deepgramService.textToSpeech(aiResponse, user.deepgramApiKey);
+    const audioResponse = await elevenLabsService.textToSpeech(aiResponse, user.elevenLabsApiKey, user.aiVoice);
 
     res.json({
       text: aiResponse,
@@ -53,46 +53,14 @@ exports.sendMessage = async (req, res) => {
   }
 };
 
-exports.updateBondType = async (req, res) => {
-  try {
-    const userId = req.session.user.id;
-    const { bondType } = req.body;
-
-    await prisma.user.update({
-      where: { id: userId },
-      data: { bondType }
-    });
-
-    res.json({ message: "Bond type updated", bondType });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to update bond type" });
-  }
-};
-
-exports.getBondType = async (req, res) => {
-  try {
-    const userId = req.session.user.id;
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { bondType: true }
-    });
-
-    res.json({ bondType: user.bondType });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to get bond type" });
-  }
-};
-
 exports.updateApiKeys = async (req, res) => {
   try {
     const userId = req.session.user.id;
-    const { groqApiKey, deepgramApiKey } = req.body;
+    const { groqApiKey, elevenLabsApiKey } = req.body;
 
     await prisma.user.update({
       where: { id: userId },
-      data: { groqApiKey, deepgramApiKey }
+      data: { groqApiKey, elevenLabsApiKey }
     });
 
     res.json({ message: "API keys updated" });
@@ -107,16 +75,48 @@ exports.getApiKeys = async (req, res) => {
     const userId = req.session.user.id;
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { groqApiKey: true, deepgramApiKey: true }
+      select: { groqApiKey: true, elevenLabsApiKey: true }
     });
 
     res.json({
       hasGroqKey: !!user.groqApiKey,
-      hasDeepgramKey: !!user.deepgramApiKey
+      hasElevenLabsKey: !!user.elevenLabsApiKey
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to get API keys" });
+  }
+};
+
+exports.updateVoice = async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const { aiVoice } = req.body;
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { aiVoice }
+    });
+
+    res.json({ message: "Voice updated", aiVoice });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update voice" });
+  }
+};
+
+exports.getVoice = async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { aiVoice: true }
+    });
+
+    res.json({ aiVoice: user.aiVoice });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to get voice" });
   }
 };
 
