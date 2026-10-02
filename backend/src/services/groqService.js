@@ -51,7 +51,7 @@ exports.getAIResponse = async (messages, bondType, apiKey) => {
         ],
         model: "openai/gpt-oss-20b",
         temperature: 0.8,
-        max_tokens: 75
+        max_tokens: 300
       });
 
       const response = completion.choices[0]?.message?.content?.trim() || '';
