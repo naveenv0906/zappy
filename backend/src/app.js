@@ -44,4 +44,7 @@ app.use('/profile', profileRoutes);
 const chatRoutes = require('./routes/chatRoutes.js');
 app.use('/chat', chatRoutes);
 
+const historyRoutes = require('./routes/historyRoutes.js');
+app.use('/history', historyRoutes);
+
 module.exports = app;

@@ -12,7 +12,8 @@ export default function Settings() {
     'Mother', 'Father', 'Sister', 'Brother', 'Grandmother', 'Grandfather', 'Aunt', 'Uncle', 'Cousin',
     'Godparent', 'Mentor', 'Like a sister', 'Like a brother',
     'Girlfriend', 'Boyfriend', 'Partner', 'Significant Other', 'Wife', 'Husband', 'Fiancé', 'Fiancée',
-    'Best Friend', 'Close Friend', 'Confidant', 'Companion', 'Neighbor', 'Teammate', 'Colleague', 'Coworker'
+    'Best Friend', 'Close Friend', 'Confidant', 'Companion', 'Neighbor', 'Teammate', 'Colleague', 'Coworker',
+    'Trolling Girl', "Diamond Tease"
   ];
 
   useEffect(() => {

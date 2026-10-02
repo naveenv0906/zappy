@@ -49,6 +49,11 @@ export default function Chat() {
 
   const startRecording = async () => {
     try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('Microphone not supported on this device/browser');
+        return;
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       const chunks = [];
@@ -69,7 +74,16 @@ export default function Chat() {
       mediaRecorder.start();
       setIsRecording(true);
     } catch (err) {
-      console.error('Microphone access denied:', err);
+      console.error('Microphone error:', err);
+      if (err.name === 'NotAllowedError') {
+        alert('Microphone access denied. Please allow microphone permission.');
+      } else if (err.name === 'NotFoundError') {
+        alert('No microphone found on this device.');
+      } else if (err.name === 'NotSupportedError') {
+        alert('HTTPS required for microphone on mobile. Use text input instead.');
+      } else {
+        alert('Microphone error. Please use text input.');
+      }
     }
   };
 
